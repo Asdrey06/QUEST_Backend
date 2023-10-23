@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('./app');
-  
+
+
+//*** SIGN IN ***
 //Utilisateur inexistant
   it('POST /signin - Utilisateur inexistant ', async () => {
     const res = await request(app).post('/users/signin').send({
@@ -14,7 +16,7 @@ const app = require('./app');
   });
   
   //Email invalide
-  it('POST /signin - Email invalide', async () => {
+  it('POST /signin - Email Utilisateur invalide', async () => {
     const res = await request(app).post('/users/signin').send({
         email: 'email_invalide',
         password: 'mot de passe incorrect',
@@ -26,7 +28,7 @@ const app = require('./app');
   });
   
   //Champs manquants
-  it('POST /signin - Champs manquants', async () => {
+  it('POST /signin - Champs Utilisateur manquants', async () => {
     const res = await request(app).post('/users/signin').send({});
     
     expect(res.statusCode).toBe(200);
