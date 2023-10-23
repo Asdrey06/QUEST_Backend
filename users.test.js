@@ -46,24 +46,24 @@ it("POST /signin - Champs manquants", async () => {
 //   expect(res.body.error).toBe('Invalid password')
 // });
 
-it("POST /signUp - Email non conforme", async () => {
+it("POST /signUp - Invalid email address", async () => {
   const res = await request(app).post("/users/signUp").send({
-    email: "emai_invalide",
-    password: "password incorrect",
+    email: "Invalid email address",
+    password: "Invalid password",
   });
 
   expect(res.statusCode).toBe(200);
   expect(res.body.result).toBe(false);
-  expect(res.body.error).toBe("email not suitable");
+  expect(res.body.error).toBe("Invalid email address");
 });
 
-it("POST /signUp - Mot de passe non conforme", async () => {
+it("POST /signUp - already existing email ", async () => {
   const res = await request(app).post("/users/signUp").send({
-    email: "email valide",
-    password: "password not suitable",
+    email: "existing email",
+    // password: "password valid",
   });
 
   expect(res.statusCode).toBe(200);
   expect(res.body.result).toBe(false);
-  expect(res.body.error).toBe("password Invalid");
+  expect(res.body.error).toBe("already existing email");
 });
