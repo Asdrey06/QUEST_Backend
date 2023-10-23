@@ -49,7 +49,7 @@ router.post("/signUp", (req, res) => {
     const newUser = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      birthday: req.body.birthday,
+      birthday: new Date(req.body.birthday),
       addresses: [
         {
           address: req.body.address,
@@ -64,7 +64,7 @@ router.post("/signUp", (req, res) => {
       cards: [req.body.cards],
       token: uid2(32),
     });
-    //savegarde du compte client
+    //sauvegarde du compte client
     newUser
       .save()
       .then((newDoc) => {
