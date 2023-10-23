@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const addressShema = mongoose.Schema({
-  adress: String,
+  address: String,
   city: String,
   zipcode: Number,
 });
@@ -16,9 +16,9 @@ const userSchema = mongoose.Schema({
   email: String,
   password: String,
   cards: [String],
-  token: String
+  token: String,
 });
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model("users", userSchema);
 
 module.exports = User;
