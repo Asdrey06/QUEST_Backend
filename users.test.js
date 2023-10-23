@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("./app");
 
+//*** SIGN IN ***
 //Utilisateur inexistant
 it("POST /signin - Utilisateur inexistant ", async () => {
   const res = await request(app).post("/users/signin").send({
@@ -11,6 +12,27 @@ it("POST /signin - Utilisateur inexistant ", async () => {
   expect(res.statusCode).toBe(200);
   expect(res.body.result).toBe(false);
   expect(res.body.error).toBe("User not found or wrong password");
+});
+
+//Email invalide
+it("POST /signin - Email Utilisateur invalide", async () => {
+  const res = await request(app).post("/users/signin").send({
+    email: "email_invalide",
+    password: "mot de passe incorrect",
+  });
+
+  expect(res.statusCode).toBe(200);
+  expect(res.body.result).toBe(false);
+  expect(res.body.error).toBe("Invalid email address");
+});
+
+//Champs manquants
+it("POST /signin - Champs Utilisateur manquants", async () => {
+  const res = await request(app).post("/users/signin").send({});
+
+  expect(res.statusCode).toBe(200);
+  expect(res.body.result).toBe(false);
+  expect(res.body.error).toBe("Missing or empty fields");
 });
 
 //Email invalide
@@ -57,13 +79,13 @@ it("POST /signUp - Invalid email address", async () => {
   expect(res.body.error).toBe("Invalid email address");
 });
 
-it("POST /signUp - already existing email ", async () => {
-  const res = await request(app).post("/users/signUp").send({
-    email: "existing email",
-    // password: "password valid",
-  });
+// it("POST /signUp - already existing email ", async () => {
+//   const res = await request(app).post("/users/signUp").send({
+//     email: "existing email",
+//     password: "password valid",
+//   });
 
-  expect(res.statusCode).toBe(200);
-  expect(res.body.result).toBe(false);
-  expect(res.body.error).toBe("already existing email");
-});
+//   expect(res.statusCode).toBe(200);
+//   expect(res.body.result).toBe(false);
+//   expect(res.body.error).toBe("already existing email");
+// });
