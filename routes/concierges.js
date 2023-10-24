@@ -37,6 +37,10 @@ router.post("/signinConcierge", (req, res) => {
         result: false,
         error: "Compte non trouvé ou mot de passe invalide",
       });
+      res.json({
+        result: false,
+        error: "Concierge not found or wrong password",
+      });
     }
   });
 });
