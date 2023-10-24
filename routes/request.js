@@ -3,8 +3,15 @@ var router = express.Router();
 const Request = require("../models/request");
 const { checkBody } = require("../modules/checkBody");
 
-//POST : request with empty field
-router.post("/saveRequest", (req, res) => {
+// Function to validate message
+// function validateMessage(message) {
+//   if (message.match(/merde/i)) {
+//     return messageRegex.test(message);
+//   }
+// }
+
+// POST : request with empty field
+router.post("/emptyRequest", (req, res) => {
   if (
     !checkBody(req.body, [
       "instruction",
@@ -15,9 +22,15 @@ router.post("/saveRequest", (req, res) => {
       "totalFees",
     ])
   )
-    res.json({ result: false, error: "Missing or empty fields" });
+    res.json({ result: false, error: "Champ non renseigne" });
   return;
 });
+
+// const message = req.body.instruction;
+// if (!validateMessage(message)) {
+//   res.json({ result: false, error: "Vulgarité interdite!" });
+//   return;
+// }
 
 //POST : Create request
 router.post("/saveRequest", (req, res) => {
@@ -34,7 +47,7 @@ router.post("/saveRequest", (req, res) => {
   newRequest
     .save()
     .then(() => {
-      res.status(201).json(newRequest);
+      res.status(200).json(newRequest);
     })
     .catch((err) => {
       res.status(400).json({ message: err.message });
