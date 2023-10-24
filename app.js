@@ -10,6 +10,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var conciergesRouter = require("./routes/concierges");
 var requestRouter = require("./routes/request");
+var chatRouter = require("./routes/chat");
 
 var app = express();
 
@@ -26,5 +27,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/concierges", conciergesRouter);
 app.use("/request", requestRouter);
+app.use("/chat", chatRouter);
 
 module.exports = app;
