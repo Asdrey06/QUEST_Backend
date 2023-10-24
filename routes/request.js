@@ -4,12 +4,13 @@ const Request = require("../models/request");
 const { checkBody } = require("../modules/checkBody");
 
 // Function to validate message
-// function validateMessage(message) {
-//   if (message.match(/merde/i)) {
-//     return messageRegex.test(message);
-//   }
+// function validateInstruction(instruction) {
+//   const messageRegex = /\bmerde\b|con/i;
+//   return messageRegex.test(instruction);
 // }
 
+const messageRegex = /\bmerde\b|con/i;
+//
 // POST : request with empty field
 router.post("/emptyRequest", (req, res) => {
   if (
@@ -22,18 +23,18 @@ router.post("/emptyRequest", (req, res) => {
       "totalFees",
     ])
   )
-    res.json({ result: false, error: "Champ non renseigne" });
+    res.json({ result: false, error: "Champ non renseigné" });
   return;
 });
 
-// const message = req.body.instruction;
-// if (!validateMessage(message)) {
-//   res.json({ result: false, error: "Vulgarité interdite!" });
-//   return;
-// }
-
 //POST : Create request
 router.post("/saveRequest", (req, res) => {
+  const instruction = req.body.instruction;
+
+  if (messageRegex.test(instruction)) {
+    res.json({ result: false, error: "Vulgarité interdite!" });
+    return;
+  }
   const newRequest = new Request({
     instruction: req.body.instruction,
     paymentInfo: req.body.paymentInfo,
@@ -52,6 +53,7 @@ router.post("/saveRequest", (req, res) => {
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });
+  console.log(instruction);
 });
 
 // GET : all requests
