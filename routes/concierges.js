@@ -5,6 +5,12 @@ const { checkBody } = require("../modules/checkBody");
 const bcrypt = require("bcrypt");
 const uid2 = require("uid2");
 
+router.get("/conciergeList", (req, res) => {
+  Concierge.find().then((data) => {
+    res.json({ result: data });
+  });
+});
+
 // Function to validate email
 function validateEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -119,7 +125,7 @@ router.post("/signupConcierge", (req, res) => {
             languages: [req.body.languages],
             aboutme: req.body.aboutme,
             transport: [req.body.transport],
-            documents: [req.body.documents],
+            documents: req.body.documents,
           },
         ],
         reviews: [
