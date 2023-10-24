@@ -1,9 +1,26 @@
 var express = require("express");
 var router = express.Router();
 const Request = require("../models/request");
+const { checkBody } = require("../modules/checkBody");
 
-router.post("/requests", (req, res) => {
-  //POST : Create requests
+//POST : request with empty field
+router.post("/saveRequest", (req, res) => {
+  if (
+    !checkBody(req.body, [
+      "instruction",
+      "paymentInfo",
+      "date",
+      "serviceFees",
+      "productFees",
+      "totalFees",
+    ])
+  )
+    res.json({ result: false, error: "Missing or empty fields" });
+  return;
+});
+
+//POST : Create request
+router.post("/saveRequest", (req, res) => {
   const newRequest = new Request({
     instruction: req.body.instruction,
     paymentInfo: req.body.paymentInfo,
@@ -13,7 +30,7 @@ router.post("/requests", (req, res) => {
     totalFees: req.body.totalFees,
   });
 
-  //saving requests
+  //saving request
   newRequest
     .save()
     .then(() => {
@@ -24,11 +41,11 @@ router.post("/requests", (req, res) => {
     });
 });
 
-// GET : Get all requests
+// GET : all requests
 router.get("/requests", (req, res) => {
   Request.find()
     .then((requests) => {
-      res.json({ allRequests: data });
+      res.json({ allRequest: requests });
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });

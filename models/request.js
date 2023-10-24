@@ -9,6 +9,6 @@ const requestSchema = mongoose.Schema({
   totalFees: { type: Number },
 });
 
-const Request = mongoose.model("requests", requestSchema);
+const Request = mongoose.model("request", requestSchema);
 
 module.exports = Request;
