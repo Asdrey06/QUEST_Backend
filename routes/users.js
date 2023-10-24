@@ -31,6 +31,8 @@ router.post("/signin", (req, res) => {
   });
 });
 
+// DATE FORMAT YYYY-MM-DD
+
 //route pour la création du compte client le SignUp
 router.post("/signUp", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
@@ -45,6 +47,7 @@ router.post("/signUp", (req, res) => {
   }
   User.findOne({ email: req.body.email }).then((data) => {
     const hash = bcrypt.hashSync(req.body.password, 10);
+    const hashCard = bcrypt.hashSync(req.body.cards, 10);
     const newUser = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -60,7 +63,7 @@ router.post("/signUp", (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hash,
-      cards: [req.body.cards],
+      cards: hashCard,
       token: uid2(32),
     });
     //sauvegarde du compte client
@@ -70,7 +73,7 @@ router.post("/signUp", (req, res) => {
         res.json({ result: true, token: newDoc.token, data: newDoc });
       })
       .catch((error) => {
-        res.json({ result: false, error: "User already exist" });
+        res.json({ result: false, error: error });
       });
   });
 });
