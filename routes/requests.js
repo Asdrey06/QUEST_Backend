@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Request = require("../models/request");
 
-router.post("/requests", async (req, res) => {
+router.post("/requests", (req, res) => {
   //POST : Create requests
   const newRequest = new Request({
     instruction: req.body.instruction,
@@ -16,7 +16,7 @@ router.post("/requests", async (req, res) => {
   //saving requests
   newRequest
     .save()
-    .then((newReq) => {
+    .then(() => {
       res.status(201).json(newRequest);
     })
     .catch((err) => {
@@ -28,7 +28,7 @@ router.post("/requests", async (req, res) => {
 router.get("/requests", (req, res) => {
   Request.find()
     .then((requests) => {
-      res.json(requests);
+      res.json({ allRequests: data });
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });

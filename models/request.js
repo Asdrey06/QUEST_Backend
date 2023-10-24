@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
 const requestSchema = mongoose.Schema({
-  instruction: String,
-  paymentInfo: String,
+  instruction: { type: String },
+  paymentInfo: { type: String },
   date: { type: Date, default: Date.now },
-  serviceFees: { type: Number, required: true },
-  productFees: { type: Number, required: true },
-  totalFees: { type: Number, required: true },
+  serviceFees: { type: Number },
+  productFees: { type: Number },
+  totalFees: { type: Number },
 });
 
-const Request = mongoose.model("request", requestSchema);
+const Request = mongoose.model("requests", requestSchema);
 
 module.exports = Request;

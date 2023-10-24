@@ -26,14 +26,37 @@ router.post("/signinConcierge", (req, res) => {
     if (data && bcrypt.compareSync(password, data.password)) {
       res.json({ result: true, token: data.token, data: data });
     } else {
-      res.json({ result: false, error: "Concierge not found or wrong password" });
+      res.json({
+        result: false,
+        error: "Concierge not found or wrong password",
+      });
     }
   });
 });
 
 //route pour la création du compte concierge
 router.post("/signupConcierge", (req, res) => {
-  if (!checkBody(req.body, ["firstname", "lastname", "birthday", "address", "city", "zipcode", "username", "email", "password", "paymentInfo", "nationality", "phoneNumber", "skills", "languages", "aboutme", "transport", "documents"])) {
+  if (
+    !checkBody(req.body, [
+      "firstname",
+      "lastname",
+      "birthday",
+      "address",
+      "city",
+      "zipcode",
+      "username",
+      "email",
+      "password",
+      "paymentInfo",
+      "nationality",
+      "phoneNumber",
+      "skills",
+      "languages",
+      "aboutme",
+      "transport",
+      "documents",
+    ])
+  ) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
   }
@@ -64,26 +87,28 @@ router.post("/signupConcierge", (req, res) => {
       phoneNumber: req.body.phoneNumber,
       personalInfo: [
         {
-            skills: [req.body.skills],
-            languages: [req.body.languages],
-            aboutme: req.body.aboutme,
-            transport: [req.body.transport],
-            documents: [req.body.documents],
+          skills: [req.body.skills],
+          languages: [req.body.languages],
+          aboutme: req.body.aboutme,
+          transport: [req.body.transport],
+          documents: [req.body.documents],
         },
       ],
       reviews: [
         {
-            stars: req.body.stars,
-            review: req.body.review,
+          stars: req.body.stars,
+          review: req.body.review,
         },
       ],
       token: uid2(32),
     });
-    newConcierge.save().then((newDoc) => {
+    newConcierge
+      .save()
+      .then((newDoc) => {
         res.json({ result: true, token: newDoc.token, data: newDoc });
       })
       .catch((error) => {
-        res.json({ result: false, error: "Concierge already exist" });
+        res.json({ result: false, error: "Request already exist" });
       });
   });
 });
