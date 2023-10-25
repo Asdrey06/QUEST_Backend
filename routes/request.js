@@ -3,7 +3,14 @@ var router = express.Router();
 const Request = require("../models/request");
 const { checkBody } = require("../modules/checkBody");
 
-const messageRegex = /merde|connard|drogue|sexe/i;
+// Function to validate message
+// function validateInstruction(instruction) {
+//   const messageRegex = /\bmerde\b|con/i;
+//   return messageRegex.test(instruction);
+// }
+
+const messageRegex = /merde|connard|drogue|sexe/gi;
+// messageRegex.lastIndex = 0;
 
 // POST : request with empty field
 router.post("/emptyRequest", (req, res) => {
@@ -27,7 +34,7 @@ router.post("/saveRequest", (req, res) => {
   console.log(instruction);
   console.log(messageRegex.test(instruction));
   if (messageRegex.test(instruction)) {
-    console.log("g dit 1 gros mot");
+    console.log("g dit");
     res.json({ result: false, error: "Vulgarité interdite!" });
     return;
   }
