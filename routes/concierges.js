@@ -98,38 +98,39 @@ router.post("/signupConcierge", (req, res) => {
       console.log("Utilisateur déjà existant");
       res.json({ result: false, error: "E-mail déjà existant" });
       // if (data)
-      
+      return;
     }
-  });
 
-  Concierge.findOne({ username: req.body.username }).then((data) => {
-    if (data) {
-      console.log("Utilisateur déjà existant");
-      res.json({ result: false, error: "Utilisateur déjà existant" });
-      // if (data)
-    } else if (req.body.birthday.split("-")[0] > 2006) {
-      console.log("Mineur!!!");
-      res.json({ result: false, error: "Âge minimum 18 ans" });
-      // if (data)
-    } else {
-      const hash = bcrypt.hashSync(req.body.password, 10);
-      const hashIban = bcrypt.hashSync(req.body.paymentInfo, 10);
-      const newConcierge = new Concierge({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        birthday: req.body.birthday,
-        addresses: [
-          {
-            address: req.body.address,
-            city: req.body.city,
-            zipcode: req.body.zipcode,
-          },
-        ],
-        photo: req.body.photo,
-        username: req.body.username,
-        email: req.body.email,
-        password: hash,
-        paymentInfo: hashIban,
+
+    
+    Concierge.findOne({ username: req.body.username }).then((data) => {
+      if (data) {
+        console.log("Utilisateur déjà existant");
+        res.json({ result: false, error: "Utilisateur déjà existant" });
+        // if (data)
+      } else if (req.body.birthday.split("-")[0] > 2006) {
+        console.log("Mineur!!!");
+        res.json({ result: false, error: "Âge minimum 18 ans" });
+        // if (data)
+      } else {
+        const hash = bcrypt.hashSync(req.body.password, 10);
+        const hashIban = bcrypt.hashSync(req.body.paymentInfo, 10);
+        const newConcierge = new Concierge({
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          birthday: req.body.birthday,
+          addresses: [
+            {
+              address: req.body.address,
+              city: req.body.city,
+              zipcode: req.body.zipcode,
+            },
+          ],
+          photo: req.body.photo,
+          username: req.body.username,
+          email: req.body.email,
+          password: hash,
+          paymentInfo: hashIban,
         nationality: req.body.nationality,
         phoneNumber: req.body.phoneNumber,
         personalInfo: [
@@ -150,14 +151,15 @@ router.post("/signupConcierge", (req, res) => {
         token: uid2(32),
       });
       newConcierge
-        .save()
-        .then((newDoc) => {
-          res.json({ result: true, token: newDoc.token, data: newDoc });
-        })
-        .catch((error) => {
-          res.json({ result: false, error: error });
-        });
+      .save()
+      .then((newDoc) => {
+        res.json({ result: true, token: newDoc.token, data: newDoc });
+      })
+      .catch((error) => {
+        res.json({ result: false, error: error });
+      });
     }
   });
+});
 });
 module.exports = router;
