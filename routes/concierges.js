@@ -17,7 +17,7 @@ function validateEmail(email) {
   return emailRegex.test(email);
 }
 
-//
+//Function to validate password
 function validatePassword(password) {
   const passwordRegex =
     /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
@@ -96,8 +96,21 @@ router.post("/signupConcierge", (req, res) => {
   Concierge.findOne({ email: req.body.email }).then((data) => {
     if (data) {
       console.log("Utilisateur déjà existant");
-      // You might want to send a response here indicating that the email is already in use.
-      res.json({ result: false, message: "E-mail déjà existant" });
+      res.json({ result: false, error: "E-mail déjà existant" });
+      // if (data)
+      
+    }
+  });
+
+  Concierge.findOne({ username: req.body.username }).then((data) => {
+    if (data) {
+      console.log("Utilisateur déjà existant");
+      res.json({ result: false, error: "Utilisateur déjà existant" });
+      // if (data)
+    } else if (req.body.birthday.split("-")[0] > 2006) {
+      console.log("Mineur!!!");
+      res.json({ result: false, error: "Âge minimum 18 ans" });
+      // if (data)
     } else {
       const hash = bcrypt.hashSync(req.body.password, 10);
       const hashIban = bcrypt.hashSync(req.body.paymentInfo, 10);
