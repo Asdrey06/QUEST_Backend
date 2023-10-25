@@ -9,8 +9,9 @@ const { checkBody } = require("../modules/checkBody");
 //   return messageRegex.test(instruction);
 // }
 
-const messageRegex = /\bmerde\b|con/i;
-//
+const messageRegex = /merde|connard|drogue|sexe/gi;
+// messageRegex.lastIndex = 0;
+
 // POST : request with empty field
 router.post("/emptyRequest", (req, res) => {
   if (
@@ -30,11 +31,14 @@ router.post("/emptyRequest", (req, res) => {
 //POST : Create request
 router.post("/saveRequest", (req, res) => {
   const instruction = req.body.instruction;
-
+  console.log(instruction);
+  console.log(messageRegex.test(instruction));
   if (messageRegex.test(instruction)) {
+    console.log("g dit");
     res.json({ result: false, error: "Vulgarité interdite!" });
     return;
   }
+  console.log("Pas de gros mot");
   const newRequest = new Request({
     instruction: req.body.instruction,
     paymentInfo: req.body.paymentInfo,
