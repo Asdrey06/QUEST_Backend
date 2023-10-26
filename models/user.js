@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
   password: String,
   cards: [String],
   token: String,
+  status: String,
 });
 
 const User = mongoose.model("users", userSchema);

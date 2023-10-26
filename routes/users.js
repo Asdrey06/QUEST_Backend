@@ -65,6 +65,7 @@ router.post("/signUp", (req, res) => {
       password: hash,
       cards: hashCard,
       token: uid2(32),
+      status: "client",
     });
     //sauvegarde du compte client
     newUser

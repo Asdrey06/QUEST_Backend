@@ -7,16 +7,16 @@ const addressSchema = mongoose.Schema({
 });
 
 const starsSchema = mongoose.Schema({
-    stars: Number,
-    review: String,
+  stars: Number,
+  review: String,
 });
 
 const InfoSchema = mongoose.Schema({
-    skills: [String],
-    languages: [String],
-    aboutme: String,
-    transport: [String],
-    documents: [String],
+  skills: [String],
+  languages: [String],
+  aboutme: String,
+  transport: [String],
+  documents: [String],
 });
 
 const conciergeSchema = mongoose.Schema({
@@ -34,8 +34,9 @@ const conciergeSchema = mongoose.Schema({
   personalInfo: [InfoSchema],
   reviews: [starsSchema],
   token: String,
+  status: String,
 });
 
-const Concierge = mongoose.model("concierge", conciergeSchema);
+const Concierge = mongoose.model("concierges", conciergeSchema);
 
 module.exports = Concierge;

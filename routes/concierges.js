@@ -43,10 +43,6 @@ router.post("/signinConcierge", (req, res) => {
         result: false,
         error: "Compte non trouvé ou mot de passe invalide",
       });
-      res.json({
-        result: false,
-        error: "Concierge not found or wrong password",
-      });
     }
   });
 });
@@ -72,6 +68,7 @@ router.post("/signupConcierge", (req, res) => {
       "aboutme",
       "transport",
       "documents",
+      "status",
     ])
   ) {
     res.json({ result: false, error: "Champs vide ou manquants" });
@@ -101,8 +98,6 @@ router.post("/signupConcierge", (req, res) => {
       return;
     }
 
-
-    
     Concierge.findOne({ username: req.body.username }).then((data) => {
       if (data) {
         console.log("Utilisateur déjà existant");
@@ -131,35 +126,36 @@ router.post("/signupConcierge", (req, res) => {
           email: req.body.email,
           password: hash,
           paymentInfo: hashIban,
-        nationality: req.body.nationality,
-        phoneNumber: req.body.phoneNumber,
-        personalInfo: [
-          {
-            skills: [req.body.skills],
-            languages: [req.body.languages],
-            aboutme: req.body.aboutme,
-            transport: [req.body.transport],
-            documents: req.body.documents,
-          },
-        ],
-        reviews: [
-          {
-            stars: req.body.stars,
-            review: req.body.review,
-          },
-        ],
-        token: uid2(32),
-      });
-      newConcierge
-      .save()
-      .then((newDoc) => {
-        res.json({ result: true, token: newDoc.token, data: newDoc });
-      })
-      .catch((error) => {
-        res.json({ result: false, error: error });
-      });
-    }
+          nationality: req.body.nationality,
+          phoneNumber: req.body.phoneNumber,
+          personalInfo: [
+            {
+              skills: [req.body.skills],
+              languages: [req.body.languages],
+              aboutme: req.body.aboutme,
+              transport: [req.body.transport],
+              documents: req.body.documents,
+            },
+          ],
+          reviews: [
+            {
+              stars: req.body.stars,
+              review: req.body.review,
+            },
+          ],
+          token: uid2(32),
+          status: req.body.status,
+        });
+        newConcierge
+          .save()
+          .then((newDoc) => {
+            res.json({ result: true, token: newDoc.token, data: newDoc });
+          })
+          .catch((error) => {
+            res.json({ result: false, error: error });
+          });
+      }
+    });
   });
-});
 });
 module.exports = router;
