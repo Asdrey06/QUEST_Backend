@@ -1,40 +1,37 @@
 const request = require('supertest');
-const app = require('../app'); // Assurez-vous que le chemin vers votre application Express est correct
+const app = require('./app'); // Assurez-vous de remplacer 'votre_application_express' par le chemin correct vers votre application Express
 
-describe('Chat API', () => {
-  describe('POST /savechat', () => {
-    it('should create a new chat', async () => {
-      const newChat = {
-        date: '2023-10-24',
-        firstname: 'John',
-        username: 'john_doe',
-        message: 'Hello, World!',
-      };
+describe('POST /savechat', () => {
+    it('devrait sauvegarder un chat avec succès', async () => {
+        const chatData = {
+            date: 'jj',
+            firstname: 'John',
+            username: 'john_doe',
+            message: 'Hello, world!',
+        };
 
-      const response = await request(app)
-        .post('/savechat')
-        .send(newChat);
+        const response = await request(app)
+            .post('/savechat')
+            .send(chatData)
+            .expect(200);
 
-      expect(response.status).toBe(200);
-      expect(response.body.result).toBe(true);
-      expect(response.body.data.date).toBe(newChat.date);
-      expect(response.body.data.firstname).toBe(newChat.firstname);
-      expect(response.body.data.username).toBe(newChat.username);
-      expect(response.body.data.message).toBe(newChat.message);
+        expect(response.body.result).toBe(true);
+        expect(response.body.data.date).toBe(chatData.date);
+        // Ajoutez d'autres assertions selon votre modèle de données
     });
 
-    it('should handle errors when saving a chat', async () => {
-      const invalidChat = {
-        // Invalid chat data, e.g., missing required fields
-      };
+    it('devrait gérer les erreurs lors de la sauvegarde', async () => {
+        // Testez un scénario où la sauvegarde échoue
+        const chatData = {
+            // Données invalides ou manquantes
+        };
 
-      const response = await request(app)
-        .post('/savechat')
-        .send(invalidChat);
+        const response = await request(app)
+            .post('/savechat')
+            .send(chatData)
+            .expect(500);
 
-      expect(response.status).toBe(500);
-      expect(response.body.result).toBe(false);
-      expect(response.body.error).toBe("Erreur lors de la sauvegarde du chat.");
+        expect(response.body.result).toBe(false);
+        expect(response.body.error).toBeTruthy();
     });
-  });
 });

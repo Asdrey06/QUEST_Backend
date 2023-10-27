@@ -15,7 +15,6 @@ const userSchema = mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  cards: [String],
   token: String,
   status: String,
 });

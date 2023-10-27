@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Chat = require("../models/chat");
+
 const { checkBody } = require("../modules/checkBody");
 const bcrypt = require("bcrypt");
 const uid2 = require("uid2");

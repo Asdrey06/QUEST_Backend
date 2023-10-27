@@ -5,7 +5,7 @@ const app = require('./app');
 
 //*** SIGN IN ***
 //Concierge inexistant
-  it('POST /signin - Consierge inexistant ', async () => {
+  it('POST /signin - Concierge inexistant ', async () => {
     const res = await request(app).post('/concierges/signinConcierge').send({
         email: 'test@test.com',
         password: 'mot de passe incorrect',
