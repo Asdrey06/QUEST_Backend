@@ -78,7 +78,6 @@ router.post("/signUp", (req, res) => {
   });
 });
 
-<<<<<<< HEAD
 router.post("/updateUsers", (req, res) => {
   User.updateOne({ __id: req.body.id }, req.body)
     .then((data) => {
@@ -87,7 +86,9 @@ router.post("/updateUsers", (req, res) => {
     .catch((error) => {
       console.error("An error occured:", error);
       res.status(500).json({ error: "An error occured" });
-=======
+    });
+});
+
 router.post("/findRequests", (req, res) => {
   User.findOne({ token: req.body.token })
     .then((client) => {
@@ -109,7 +110,6 @@ router.post("/findRequests", (req, res) => {
     .catch((error) => {
       console.error("An error occurred: ", error);
       res.status(500).json({ error: "An error occurred" });
->>>>>>> d1a53a9e62e9df3bf03524c4db83b14a137f7999
     });
 });
 
