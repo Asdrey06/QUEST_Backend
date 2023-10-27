@@ -4,6 +4,7 @@ const User = require("../models/user");
 const { checkBody } = require("../modules/checkBody");
 const bcrypt = require("bcrypt");
 const uid2 = require("uid2");
+const Request = require("../models/request");
 
 // Function to validate email
 function validateEmail(email) {
@@ -76,4 +77,29 @@ router.post("/signUp", (req, res) => {
       });
   });
 });
+
+router.post("/findRequests", (req, res) => {
+  User.findOne({ token: req.body.token })
+    .then((client) => {
+      if (!client) {
+        res.json({ result: [] });
+      } else {
+        const requestIds = client.requests;
+
+        Request.find({ _id: { $in: requestIds } })
+          .then((requests) => {
+            res.json({ result: requests });
+          })
+          .catch((error) => {
+            console.error("An error occurred: ", error);
+            res.status(500).json({ error: "An error occurred" });
+          });
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
+    });
+});
+
 module.exports = router;

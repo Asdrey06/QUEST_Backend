@@ -3,6 +3,7 @@ var router = express.Router();
 const Request = require("../models/request");
 const Concierge = require("../models/concierge");
 const { checkBody } = require("../modules/checkBody");
+const User = require("../models/user");
 
 // Function to validate message
 // function validateInstruction(instruction) {
@@ -47,6 +48,8 @@ router.post("/saveRequest", (req, res) => {
     productFees: req.body.productFees,
     totalFees: req.body.totalFees,
     from: req.body.from,
+    fromConcierge: req.body.fromConcierge,
+    photoConcierge: req.body.photoConcierge,
   });
 
   //saving request
@@ -58,6 +61,15 @@ router.post("/saveRequest", (req, res) => {
       Concierge.updateOne(
         {
           _id: req.body.id,
+        },
+        { $push: { requests: data._id } }
+      ).then((data) => {
+        console.log(data);
+      });
+
+      User.updateOne(
+        {
+          token: req.body.idClient,
         },
         { $push: { requests: data._id } }
       ).then((data) => {
