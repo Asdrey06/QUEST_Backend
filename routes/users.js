@@ -47,7 +47,6 @@ router.post("/signUp", (req, res) => {
   }
   User.findOne({ email: req.body.email }).then((data) => {
     const hash = bcrypt.hashSync(req.body.password, 10);
-    const hashCard = bcrypt.hashSync(req.body.cards, 10);
     const newUser = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -63,7 +62,6 @@ router.post("/signUp", (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hash,
-      cards: hashCard,
       token: uid2(32),
       status: "client",
     });
