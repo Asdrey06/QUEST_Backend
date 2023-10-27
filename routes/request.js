@@ -55,12 +55,7 @@ router.post("/saveRequest", (req, res) => {
     .then((data) => {
       console.log(data._id);
       console.log(req.body.instruction);
-      Concierge.updateOne(
-        {
-          _id: req.body.id,
-        },
-        { $push: { requests: data._id } }
-      ).then((data) => {
+      Concierge.updateOne({ _id: req.body.id,}, { $push: { requests: data._id } }).then((data) => {
         console.log(data);
       });
 
