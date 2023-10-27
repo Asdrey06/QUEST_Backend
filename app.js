@@ -8,6 +8,7 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var deleteRouter = require("./routes/delete");
 var conciergesRouter = require("./routes/concierges");
 var requestRouter = require("./routes/request");
 var chatRouter = require("./routes/chat");
@@ -67,6 +68,7 @@ app.post("/processpayment", async (req, res) => {
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/delete", deleteRouter);
 app.use("/concierges", conciergesRouter);
 app.use("/request", requestRouter);
 app.use("/chat", chatRouter);
