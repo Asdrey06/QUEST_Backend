@@ -184,4 +184,15 @@ router.post("/findRequests", (req, res) => {
     });
 });
 
+//Route pour mettre a jour les paramètres concierge
+router.post("/updateConcierge", (req, res) => {
+
+  Concierge.updateOne({ _id: req.body.id }, req.body).then((data) => {
+      res.json({ result: data})
+    }).catch((error) => {
+      console.error("An error occured: ", error);
+      res.status(500).json({ error: "An error occured "})
+    });
+});
+
 module.exports = router;
