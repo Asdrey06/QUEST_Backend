@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Concierge = require("../models/concierge");
+const Request = require("../models/request");
 const { checkBody } = require("../modules/checkBody");
 const bcrypt = require("bcrypt");
 const uid2 = require("uid2");
@@ -158,4 +159,29 @@ router.post("/signupConcierge", (req, res) => {
     });
   });
 });
+
+router.post("/findRequests", (req, res) => {
+  Concierge.findOne({ token: req.body.token })
+    .then((concierge) => {
+      if (!concierge) {
+        res.json({ result: [] });
+      } else {
+        const requestIds = concierge.requests;
+
+        Request.find({ _id: { $in: requestIds } })
+          .then((requests) => {
+            res.json({ result: requests });
+          })
+          .catch((error) => {
+            console.error("An error occurred: ", error);
+            res.status(500).json({ error: "An error occurred" });
+          });
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
+    });
+});
+
 module.exports = router;

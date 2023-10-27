@@ -46,6 +46,7 @@ router.post("/saveRequest", (req, res) => {
     serviceFees: req.body.serviceFees,
     productFees: req.body.productFees,
     totalFees: req.body.totalFees,
+    from: req.body.from,
   });
 
   //saving request
