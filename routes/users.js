@@ -76,4 +76,16 @@ router.post("/signUp", (req, res) => {
       });
   });
 });
+
+router.post("/updateUsers", (req, res) => {
+  User.updateOne({ __id: req.body.id }, req.body)
+    .then((data) => {
+      res.json({ result: data });
+    })
+    .catch((error) => {
+      console.error("An error occured:", error);
+      res.status(500).json({ error: "An error occured" });
+    });
+});
+
 module.exports = router;
