@@ -8,6 +8,8 @@ const requestSchema = mongoose.Schema({
   productFees: { type: Number },
   totalFees: { type: Number },
   from: String,
+  fromConcierge: String,
+  photoConcierge: String,
 });
 
 const Request = mongoose.model("requests", requestSchema);

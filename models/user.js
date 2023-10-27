@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
   password: String,
   token: String,
   status: String,
+  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "requests" }],
 });
 
 const User = mongoose.model("users", userSchema);
