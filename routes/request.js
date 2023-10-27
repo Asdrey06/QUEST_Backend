@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Request = require("../models/request");
+const Concierge = require("../models/concierge");
 const { checkBody } = require("../modules/checkBody");
 
 // Function to validate message
@@ -34,11 +35,10 @@ router.post("/saveRequest", (req, res) => {
   console.log(instruction);
   console.log(messageRegex.test(instruction));
   if (messageRegex.test(instruction)) {
-    console.log("g dit");
     res.json({ result: false, error: "Vulgarité interdite!" });
     return;
   }
-  console.log("Pas de gros mot");
+
   const newRequest = new Request({
     instruction: req.body.instruction,
     paymentInfo: req.body.paymentInfo,
@@ -51,7 +51,18 @@ router.post("/saveRequest", (req, res) => {
   //saving request
   newRequest
     .save()
-    .then(() => {
+    .then((data) => {
+      console.log(data._id);
+      console.log(req.body.instruction);
+      Concierge.updateOne(
+        {
+          _id: req.body.id,
+        },
+        { $push: { requests: data._id } }
+      ).then((data) => {
+        console.log(data);
+      });
+
       res.status(200).json(newRequest);
     })
     .catch((err) => {

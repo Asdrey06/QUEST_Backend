@@ -35,6 +35,7 @@ const conciergeSchema = mongoose.Schema({
   reviews: [starsSchema],
   token: String,
   status: String,
+  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "requests" }],
 });
 
 const Concierge = mongoose.model("concierges", conciergeSchema);
