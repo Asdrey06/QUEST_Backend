@@ -184,14 +184,30 @@ router.post("/findRequests", (req, res) => {
     });
 });
 
+router.post("/findInfo", (req, res) => {
+  Concierge.findOne({ _id: req.body.id })
+    .then((concierge) => {
+      if (!concierge) {
+        res.json({ result: "Concierge profile not found" });
+      } else {
+        res.json({ result: concierge });
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
+    });
+});
+
 //Route pour mettre a jour les paramètres concierge
 router.post("/updateConcierge", (req, res) => {
-
-  Concierge.updateOne({ _id: req.body.id }, req.body).then((data) => {
-      res.json({ result: data})
-    }).catch((error) => {
+  Concierge.updateOne({ _id: req.body.id }, req.body)
+    .then((data) => {
+      res.json({ result: data });
+    })
+    .catch((error) => {
       console.error("An error occured: ", error);
-      res.status(500).json({ error: "An error occured "})
+      res.status(500).json({ error: "An error occured " });
     });
 });
 
