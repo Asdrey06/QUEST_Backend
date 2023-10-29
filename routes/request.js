@@ -58,7 +58,10 @@ router.post("/saveRequest", (req, res) => {
     .then((data) => {
       console.log(data._id);
       console.log(req.body.instruction);
-      Concierge.updateOne({ _id: req.body.id,}, { $push: { requests: data._id } }).then((data) => {
+      Concierge.updateOne(
+        { _id: req.body.id },
+        { $push: { requests: data._id } }
+      ).then((data) => {
         console.log(data);
       });
 
@@ -87,6 +90,21 @@ router.get("/requests", (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
+    });
+});
+
+router.post("/openRequest", (req, res) => {
+  Request.findOne({ _id: req.body.id })
+    .then((request) => {
+      if (!request) {
+        res.json({ result: "Request not found" });
+      } else {
+        res.json({ result: request });
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
     });
 });
 
