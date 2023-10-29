@@ -199,6 +199,21 @@ router.post("/findInfo", (req, res) => {
     });
 });
 
+router.post("/findInfoToken", (req, res) => {
+  Concierge.findOne({ token: req.body.token })
+    .then((concierge) => {
+      if (!concierge) {
+        res.json({ result: "Concierge profile not found" });
+      } else {
+        res.json({ result: concierge });
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
+    });
+});
+
 //Route pour mettre a jour les paramètres concierge
 router.post("/updateConcierge", (req, res) => {
   Concierge.updateOne({ _id: req.body.id }, req.body)

@@ -113,4 +113,15 @@ router.post("/findRequests", (req, res) => {
     });
 });
 
+router.post("/findUserInfo", (req, res) => {
+  User.findOne({ token: req.body.token })
+    .then((data) => {
+      res.json({ result: data });
+    })
+    .catch((error) => {
+      console.error("An error occured:", error);
+      res.status(500).json({ error: "An error occured" });
+    });
+});
+
 module.exports = router;
