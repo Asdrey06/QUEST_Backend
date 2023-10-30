@@ -12,6 +12,12 @@ function validateEmail(email) {
   return emailRegex.test(email);
 }
 
+//Function to validate password
+function validatePassword(password) {
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+  return passwordRegex.test(password);
+}
 // The route allows me to connect to my customer account
 router.post("/signin", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
@@ -46,6 +52,17 @@ router.post("/signUp", (req, res) => {
     res.json({ result: false, error: "Invalid email address" });
     return;
   }
+
+  const { password } = req.body;
+  if (!validatePassword(password)) {
+    res.json({
+      result: false,
+      error:
+        "Format du mot de passe incorrect (Première lettre majusucule, 8 caractères et un symbole requis)",
+    });
+    return;
+  }
+
   User.findOne({ email: req.body.email }).then((data) => {
     const hash = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
