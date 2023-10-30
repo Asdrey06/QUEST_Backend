@@ -112,7 +112,7 @@ router.post("/signupConcierge", (req, res) => {
         // if (data)
       } else {
         const hash = bcrypt.hashSync(req.body.password, 10);
-        const hashIban = bcrypt.hashSync(req.body.paymentInfo, 10);
+        
         const newConcierge = new Concierge({
           firstname: req.body.firstname,
           lastname: req.body.lastname,
@@ -128,7 +128,7 @@ router.post("/signupConcierge", (req, res) => {
           username: req.body.username,
           email: req.body.email,
           password: hash,
-          paymentInfo: hashIban,
+          paymentInfo: req.body.paymentInfo,
           nationality: req.body.nationality,
           phoneNumber: req.body.phoneNumber,
           personalInfo: [
@@ -216,11 +216,72 @@ router.post("/findInfoToken", (req, res) => {
     });
 });
 
-//Route pour mettre a jour les paramètres concierge
+//Route pour mettre a jour l'e-mail concierge
 router.post("/updateConcierge", (req, res) => {
-  Concierge.updateOne({ _id: req.body.id }, req.body)
-    .then((data) => {
-      res.json({ result: data });
+  const { email } = req.body;
+  if (!validateEmail(email)) {
+    res.json({ result: false, error: "Adresse e-mail invalide" });
+    return;
+  }
+  Concierge.updateOne({ token: req.body.token}, {email: req.body.email})
+  .then((data) => {
+      res.json({ result: true });
+    })
+    .catch((error) => {
+      console.error("An error occured: ", error);
+      res.status(500).json({ error: "An error occured " });
+    });
+});
+
+//Route qui permet de modifier et crypter le mot de passe concierge
+router.post("/updatePasswordConcierge", (req, res) => {
+  const { password } = req.body;
+  if (!validatePassword(password)) {
+    res.json({
+      result: false,
+      error:
+        "Format du mot de passe incorrect (Première lettre majusucule, 8 caractères et un symbole requis)",
+    });
+    return;
+  }
+  const hash = bcrypt.hashSync(req.body.password, 10);
+  Concierge.updateOne({ token: req.body.token}, {password: hash}).then((data) => {
+       res.json({ result: true });
+        })
+    .catch((error) => {
+      console.error("An error occured: ", error);
+      res.status(500).json({ error: "An error occured " });
+    });
+});
+//Route qui permet de modifier l'adresse concierge
+router.post("/updateAddressConcierge", (req, res) => {
+  Concierge.updateOne({ token: req.body.token}, { addresses: [req.body.address]})
+  .then((data) => {
+      res.json({ result: true });
+    })
+    .catch((error) => {
+      console.error("An error occured: ", error);
+      res.status(500).json({ error: "An error occured " });
+    });
+});
+
+//Route qui permet de modifier l'aboutme concierge
+router.post("/updateAboutMeConcierge", (req, res) => {
+  Concierge.updateOne({ token: req.body.token}, { personalInfo: [req.body.aboutme]})
+  .then((data) => {
+      res.json({ result: true });
+    })
+    .catch((error) => {
+      console.error("An error occured: ", error);
+      res.status(500).json({ error: "An error occured " });
+    });
+});
+
+//Route qui permet de modifier l'iban concierge
+router.post("/updateIbanConcierge", (req, res) => {
+  Concierge.updateOne({ token: req.body.token}, { paymentInfo: req.body.paymentInfo})
+  .then((data) => {
+      res.json({ result: true });
     })
     .catch((error) => {
       console.error("An error occured: ", error);
