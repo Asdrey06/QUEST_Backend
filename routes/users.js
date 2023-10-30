@@ -82,7 +82,7 @@ router.post("/signUp", (req, res) => {
       });
   });
 });
-
+// Route pour modifier le client
 router.post("/updateUsers", (req, res) => {
   User.updateOne({ __id: req.body.id }, req.body)
     .then((data) => {
@@ -94,6 +94,7 @@ router.post("/updateUsers", (req, res) => {
     });
 });
 
+// Route pour récupérer et afficher les infos du client
 router.post("/findRequests", (req, res) => {
   User.findOne({ token: req.body.token })
     .then((client) => {
@@ -118,6 +119,7 @@ router.post("/findRequests", (req, res) => {
     });
 });
 
+//Route pour récupérer les infos du client
 router.post("/findUserInfo", (req, res) => {
   User.findOne({ token: req.body.token })
     .then((data) => {
@@ -128,6 +130,8 @@ router.post("/findUserInfo", (req, res) => {
       res.status(500).json({ error: "An error occured" });
     });
 });
+
+// Route pour modifier l'Email.
 router.post("/updateMail", (req, res) => {
   User.updateOne(
     {
@@ -140,6 +144,7 @@ router.post("/updateMail", (req, res) => {
   });
 });
 
+// Route pour modifier le mot de passe et hasher le nouveau mot de passe.
 router.post("/updatePasswords", (req, res) => {
   const { password } = req.body;
   if (!validatePassword(password)) {

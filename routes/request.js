@@ -93,6 +93,7 @@ router.get("/requests", (req, res) => {
     });
 });
 
+// route pour avoir plus de détail de la requete client
 router.post("/openRequest", (req, res) => {
   Request.findOne({ _id: req.body.id })
     .then((request) => {
