@@ -11,6 +11,11 @@ function validateEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return emailRegex.test(email);
 }
+function validatePassword(password) {
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+  return passwordRegex.test(password);
+}
 
 //Function to validate password
 function validatePassword(password) {
@@ -94,7 +99,7 @@ router.post("/signUp", (req, res) => {
       });
   });
 });
-
+// Route pour modifier le client
 router.post("/updateUsers", (req, res) => {
   User.updateOne({ __id: req.body.id }, req.body)
     .then((data) => {
@@ -106,6 +111,7 @@ router.post("/updateUsers", (req, res) => {
     });
 });
 
+// Route pour récupérer et afficher les infos du client
 router.post("/findRequests", (req, res) => {
   User.findOne({ token: req.body.token })
     .then((client) => {
@@ -130,10 +136,46 @@ router.post("/findRequests", (req, res) => {
     });
 });
 
+//Route pour récupérer les infos du client
 router.post("/findUserInfo", (req, res) => {
   User.findOne({ token: req.body.token })
     .then((data) => {
       res.json({ result: data });
+    })
+    .catch((error) => {
+      console.error("An error occured:", error);
+      res.status(500).json({ error: "An error occured" });
+    });
+});
+
+// Route pour modifier l'Email.
+router.post("/updateMail", (req, res) => {
+  User.updateOne(
+    {
+      _id: req.body.id,
+    },
+    { email: req.body.email }
+  ).then((data) => {
+    console.log(data);
+    res.json({ result: "E-mail mis à jour" });
+  });
+});
+
+// Route pour modifier le mot de passe et hasher le nouveau mot de passe.
+router.post("/updatePasswords", (req, res) => {
+  const { password } = req.body;
+  if (!validatePassword(password)) {
+    res.json({
+      result: false,
+      error:
+        "Format du mot de passe incorrect (Première lettre majuscule, 8 caractères et un symbole requis",
+    });
+    return;
+  }
+  const hash = bcrypt.hashSync(req.body.password, 10);
+  User.updateOne({ _id: req.body.id }, { password: hash })
+    .then((data) => {
+      res.json({ result: true });
     })
     .catch((error) => {
       console.error("An error occured:", error);

@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const chatSchema = mongoose.Schema({
+  date: Date,
+  firstname: String,
+  message: String,
+});
+
 const requestSchema = mongoose.Schema({
   instruction: { type: String },
   paymentInfo: { type: String },
@@ -10,6 +16,7 @@ const requestSchema = mongoose.Schema({
   from: String,
   fromConcierge: String,
   photoConcierge: String,
+  chat: [chatSchema],
 });
 
 const Request = mongoose.model("requests", requestSchema);
