@@ -43,18 +43,16 @@ router.post("/signin", (req, res) => {
   });
 });
 
-// DATE FORMAT YYYY-MM-DD
-
 //route pour la création du compte client le SignUp
 router.post("/signUp", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
+    res.json({ result: false, error: "Champs vides ou manquants" });
     return;
   }
 
   const { email } = req.body;
   if (!validateEmail(email)) {
-    res.json({ result: false, error: "Invalid email address" });
+    res.json({ result: false, error: "Adresse e-mail invalide" });
     return;
   }
 
