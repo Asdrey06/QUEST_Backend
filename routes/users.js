@@ -11,6 +11,11 @@ function validateEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return emailRegex.test(email);
 }
+function validatePassword(password) {
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+  return passwordRegex.test(password);
+}
 
 // The route allows me to connect to my customer account
 router.post("/signin", (req, res) => {
@@ -135,16 +140,25 @@ router.post("/updateMail", (req, res) => {
   });
 });
 
-router.post("/updatePassword", (req, res) => {
-  User.updateOne(
-    {
-      _id: req.body.id,
-    },
-    { email: req.body.password }
-  ).then((data) => {
-    console.log(data);
-    res.json({ result: "E-mail mis à jour" });
-  });
+router.post("/updatePasswords", (req, res) => {
+  const { password } = req.body;
+  if (!validatePassword(password)) {
+    res.json({
+      result: false,
+      error:
+        "Format du mot de passe incorrect (Première lettre majuscule, 8 caractères et un symbole requis",
+    });
+    return;
+  }
+  const hash = bcrypt.hashSync(req.body.password, 10);
+  User.updateOne({ _id: req.body.id }, { password: hash })
+    .then((data) => {
+      res.json({ result: true });
+    })
+    .catch((error) => {
+      console.error("An error occured:", error);
+      res.status(500).json({ error: "An error occured" });
+    });
 });
 
 module.exports = router;
