@@ -123,5 +123,28 @@ router.post("/findUserInfo", (req, res) => {
       res.status(500).json({ error: "An error occured" });
     });
 });
+router.post("/updateMail", (req, res) => {
+  User.updateOne(
+    {
+      _id: req.body.id,
+    },
+    { email: req.body.email }
+  ).then((data) => {
+    console.log(data);
+    res.json({ result: "E-mail mis à jour" });
+  });
+});
+
+router.post("/updatePassword", (req, res) => {
+  User.updateOne(
+    {
+      _id: req.body.id,
+    },
+    { email: req.body.password }
+  ).then((data) => {
+    console.log(data);
+    res.json({ result: "E-mail mis à jour" });
+  });
+});
 
 module.exports = router;
