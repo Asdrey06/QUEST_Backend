@@ -64,7 +64,6 @@ router.post("/signupConcierge", (req, res) => {
       "email",
       "password",
       "paymentInfo",
-      "nationality",
       "phoneNumber",
       "skills",
       "languages",
