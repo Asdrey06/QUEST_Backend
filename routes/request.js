@@ -201,4 +201,53 @@ router.post("/getChat", (req, res) => {
     });
 });
 
+router.post("/getFinishedRequestClient", (req, res) => {
+  FinishedRequest.find({ clientToken: req.body.token })
+    .then((request) => {
+      if (!request) {
+        res.json({ result: "Request not found" });
+      } else {
+        res.json({ result: request });
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
+    });
+});
+
+router.post("/getFinishedRequestConcierge", (req, res) => {
+  Concierge.find({ token: req.body.token }).then((data) => {
+    console.log("this", data[0]._id);
+
+    FinishedRequest.find({ conciergeId: data[0]._id })
+      .then((request) => {
+        if (!request) {
+          res.json({ result: "Request not found" });
+        } else {
+          res.json({ result: request });
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred: ", error);
+        res.status(500).json({ error: "An error occurred" });
+      });
+  });
+});
+
+router.delete("/delete", (req, res) => {
+  Request.deleteOne({ _id: req.body.id })
+
+    .then((data) => {
+      console.log(data);
+      res.json({ result: data });
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Une erreur s'est produite lors de la suppression." });
+    });
+  console.log("ID to delete:", req.body._id);
+});
+
 module.exports = router;
