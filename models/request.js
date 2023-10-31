@@ -17,6 +17,7 @@ const requestSchema = mongoose.Schema({
   fromConcierge: String,
   photoConcierge: String,
   chat: [chatSchema],
+  done: Boolean,
 });
 
 const Request = mongoose.model("requests", requestSchema);

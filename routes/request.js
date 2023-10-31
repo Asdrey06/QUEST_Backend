@@ -50,6 +50,7 @@ router.post("/saveRequest", (req, res) => {
     from: req.body.from,
     fromConcierge: req.body.fromConcierge,
     photoConcierge: req.body.photoConcierge,
+    done: false,
   });
 
   //saving request
@@ -93,7 +94,6 @@ router.get("/requests", (req, res) => {
     });
 });
 
-// route pour avoir plus de détail de la requete client
 router.post("/openRequest", (req, res) => {
   Request.findOne({ _id: req.body.id })
     .then((request) => {
@@ -109,20 +109,30 @@ router.post("/openRequest", (req, res) => {
     });
 });
 
-// route pour supprimer la requête
-router.delete("/delete", (req, res) => {
-  Request.deleteOne({ _id: req.body._id })
+router.post("/changeRequestStatus", (req, res) => {
+  Request.updateOne(
+    {
+      _id: req.body.id,
+    },
+    { done: true }
+  ).then((data) => {
+    console.log(data);
+  });
+});
 
-    .then((data) => {
-      console.log(data);
-      res.json({ result: data });
+router.post("/getChat", (req, res) => {
+  Request.findOne({ _id: req.body.id })
+    .then((request) => {
+      if (!request) {
+        res.json({ result: "Request not found" });
+      } else {
+        res.json({ result: request });
+      }
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Une erreur s'est produite lors de la suppression." });
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
     });
-  console.log("ID to delete:", req.body._id);
 });
 
 module.exports = router;
