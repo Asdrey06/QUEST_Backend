@@ -1,10 +1,12 @@
 var express = require("express");
 var router = express.Router();
+
 const Request = require("../models/request");
 const Concierge = require("../models/concierge");
 const { checkBody } = require("../modules/checkBody");
 const User = require("../models/user");
 const FinishedRequest = require("../models/finishedRequest");
+
 // Function to validate message
 // function validateInstruction(instruction) {
 //   const messageRegex = /\bmerde\b|con/i;

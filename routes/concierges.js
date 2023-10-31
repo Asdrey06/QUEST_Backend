@@ -186,6 +186,23 @@ router.post("/findRequests", (req, res) => {
 });
 // route pour recuperer les infos du conierge
 router.post("/findInfo", (req, res) => {
+  Request.findOne({ _id: req.body.id }).then((data) => {
+    Concierge.findOne({ _id: data.conciergeId })
+      .then((concierge) => {
+        if (!concierge) {
+          res.json({ result: "Concierge profile not found" });
+        } else {
+          res.json({ result: concierge, request: data });
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred: ", error);
+        res.status(500).json({ error: "An error occurred" });
+      });
+  });
+});
+
+router.post("/findInfoProfile", (req, res) => {
   Concierge.findOne({ _id: req.body.id })
     .then((concierge) => {
       if (!concierge) {
@@ -199,6 +216,32 @@ router.post("/findInfo", (req, res) => {
       res.status(500).json({ error: "An error occurred" });
     });
 });
+
+router.post("/findInfoDashboardConcierge", (req, res) => {
+  Concierge.findOne({ token: req.body.token })
+    .then((concierge) => {
+      console.log("huh", concierge);
+      if (!concierge) {
+        res.json({ result: "Concierge profile not found" });
+      } else {
+        res.json({ result: concierge });
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred: ", error);
+      res.status(500).json({ error: "An error occurred" });
+    });
+});
+
+router.post("/leaveReview", (req, res) => {
+  Concierge.updateOne(
+    { _id: req.body.id },
+    { $push: { reviews: req.body.review } }
+  ).then((data) => {
+    res.json({ result: true });
+  });
+});
+
 // Route pour recuperer les détails du concierge
 router.post("/findInfoToken", (req, res) => {
   Concierge.findOne({ token: req.body.token })

@@ -7,6 +7,7 @@ const addressSchema = mongoose.Schema({
 });
 
 const starsSchema = mongoose.Schema({
+  from: String,
   stars: Number,
   review: String,
 });
