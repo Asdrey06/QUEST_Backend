@@ -67,34 +67,39 @@ router.post("/signUp", (req, res) => {
   }
 
   User.findOne({ email: req.body.email }).then((data) => {
-    const hash = bcrypt.hashSync(req.body.password, 10);
-    const newUser = new User({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      birthday: new Date(req.body.birthday),
-      addresses: [
-        {
-          address: req.body.address,
-          city: req.body.city,
-          zipcode: req.body.zipcode,
-        },
-      ],
-      photo: req.body.photo,
-      username: req.body.username,
-      email: req.body.email,
-      password: hash,
-      token: uid2(32),
-      status: "client",
-    });
-    //sauvegarde du compte client
-    newUser
-      .save()
-      .then((newDoc) => {
-        res.json({ result: true, token: newDoc.token, data: newDoc });
-      })
-      .catch((error) => {
-        res.json({ result: false, error: error });
+    if (req.body.birthday.split("-")[0] > 2006) {
+      console.log("Mineur!!!");
+      res.json({ result: false, error: "Âge minimum 18 ans" });
+    } else {
+      const hash = bcrypt.hashSync(req.body.password, 10);
+      const newUser = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        birthday: new Date(req.body.birthday),
+        addresses: [
+          {
+            address: req.body.address,
+            city: req.body.city,
+            zipcode: req.body.zipcode,
+          },
+        ],
+        photo: req.body.photo,
+        username: req.body.username,
+        email: req.body.email,
+        password: hash,
+        token: uid2(32),
+        status: "client",
       });
+      //sauvegarde du compte client
+      newUser
+        .save()
+        .then((newDoc) => {
+          res.json({ result: true, token: newDoc.token, data: newDoc });
+        })
+        .catch((error) => {
+          res.json({ result: false, error: error });
+        });
+    }
   });
 });
 // Route pour modifier le client

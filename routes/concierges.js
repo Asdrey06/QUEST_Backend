@@ -112,7 +112,7 @@ router.post("/signupConcierge", (req, res) => {
         // if (data)
       } else {
         const hash = bcrypt.hashSync(req.body.password, 10);
-        
+
         const newConcierge = new Concierge({
           firstname: req.body.firstname,
           lastname: req.body.lastname,
@@ -223,8 +223,8 @@ router.post("/updateConcierge", (req, res) => {
     res.json({ result: false, error: "Adresse e-mail invalide" });
     return;
   }
-  Concierge.updateOne({ token: req.body.token}, {email: req.body.email})
-  .then((data) => {
+  Concierge.updateOne({ token: req.body.token }, { email: req.body.email })
+    .then((data) => {
       res.json({ result: true });
     })
     .catch((error) => {
@@ -245,9 +245,10 @@ router.post("/updatePasswordConcierge", (req, res) => {
     return;
   }
   const hash = bcrypt.hashSync(req.body.password, 10);
-  Concierge.updateOne({ token: req.body.token}, {password: hash}).then((data) => {
-       res.json({ result: true });
-        })
+  Concierge.updateOne({ token: req.body.token }, { password: hash })
+    .then((data) => {
+      res.json({ result: true });
+    })
     .catch((error) => {
       console.error("An error occured: ", error);
       res.status(500).json({ error: "An error occured " });
@@ -255,8 +256,11 @@ router.post("/updatePasswordConcierge", (req, res) => {
 });
 //Route qui permet de modifier l'adresse concierge
 router.post("/updateAddressConcierge", (req, res) => {
-  Concierge.updateOne({ token: req.body.token}, { addresses: [req.body.address]})
-  .then((data) => {
+  Concierge.updateOne(
+    { token: req.body.token },
+    { addresses: [req.body.address] }
+  )
+    .then((data) => {
       res.json({ result: true });
     })
     .catch((error) => {
@@ -267,8 +271,11 @@ router.post("/updateAddressConcierge", (req, res) => {
 
 //Route qui permet de modifier l'aboutme concierge
 router.post("/updateAboutMeConcierge", (req, res) => {
-  Concierge.updateOne({ token: req.body.token}, { personalInfo: [req.body.aboutme]})
-  .then((data) => {
+  Concierge.updateOne(
+    { token: req.body.token },
+    { personalInfo: [req.body.aboutme] }
+  )
+    .then((data) => {
       res.json({ result: true });
     })
     .catch((error) => {
@@ -279,8 +286,11 @@ router.post("/updateAboutMeConcierge", (req, res) => {
 
 //Route qui permet de modifier l'iban concierge
 router.post("/updateIbanConcierge", (req, res) => {
-  Concierge.updateOne({ token: req.body.token}, { paymentInfo: req.body.paymentInfo})
-  .then((data) => {
+  Concierge.updateOne(
+    { token: req.body.token },
+    { paymentInfo: req.body.paymentInfo }
+  )
+    .then((data) => {
       res.json({ result: true });
     })
     .catch((error) => {
