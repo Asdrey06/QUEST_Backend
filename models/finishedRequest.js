@@ -6,7 +6,7 @@ const chatSchema = mongoose.Schema({
   message: String,
 });
 
-const requestSchema = mongoose.Schema({
+const finishedRequestSchema = mongoose.Schema({
   instruction: { type: String },
   paymentInfo: { type: String },
   date: { type: Date, default: Date.now },
@@ -16,12 +16,16 @@ const requestSchema = mongoose.Schema({
   from: String,
   fromConcierge: String,
   photoConcierge: String,
-  chat: [chatSchema],
-  done: Boolean,
   conciergeId: String,
   clientToken: String,
+  chat: [chatSchema],
+  pastRequestId: String,
+  done: Boolean,
 });
 
-const Request = mongoose.model("requests", requestSchema);
+const FinishedRequest = mongoose.model(
+  "finishedRequests",
+  finishedRequestSchema
+);
 
-module.exports = Request;
+module.exports = FinishedRequest;

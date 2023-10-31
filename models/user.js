@@ -18,6 +18,9 @@ const userSchema = mongoose.Schema({
   token: String,
   status: String,
   requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "requests" }],
+  finishedrequests: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "finishedrequests" },
+  ],
 });
 
 const User = mongoose.model("users", userSchema);
