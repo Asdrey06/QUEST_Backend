@@ -36,6 +36,10 @@ const conciergeSchema = mongoose.Schema({
   token: String,
   status: String,
   requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "requests" }],
+  finishedrequests: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "finishedrequests" },
+  ],
+  totalEarned: String,
 });
 
 const Concierge = mongoose.model("concierges", conciergeSchema);
