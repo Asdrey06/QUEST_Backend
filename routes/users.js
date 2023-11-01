@@ -26,19 +26,22 @@ function validatePassword(password) {
 // The route allows me to connect to my customer account
 router.post("/signin", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
+    res.json({ result: false, error: "Champs vides ou manquants" });
     return;
   }
   const { email, password } = req.body;
   if (!validateEmail(email)) {
-    res.json({ result: false, error: "Invalid email address" });
+    res.json({ result: false, error: "Adresse e-mail invalide" });
     return;
   }
   User.findOne({ email: email }).then((data) => {
     if (data && bcrypt.compareSync(password, data.password)) {
       res.json({ result: true, token: data.token, data: data });
     } else {
-      res.json({ result: false, error: "User not found or wrong password" });
+      res.json({
+        result: false,
+        error: "Compte non trouvé ou mot de passe invalide",
+      });
     }
   });
 });
@@ -52,7 +55,7 @@ router.post("/signUp", (req, res) => {
 
   const { email } = req.body;
   if (!validateEmail(email)) {
-    res.json({ result: false, error: "Invalid email address" });
+    res.json({ result: false, error: "Adresse e-mail invalide" });
     return;
   }
 
