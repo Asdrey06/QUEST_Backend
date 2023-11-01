@@ -11,11 +11,11 @@ function validateEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return emailRegex.test(email);
 }
-function validatePassword(password) {
-  const passwordRegex =
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
-  return passwordRegex.test(password);
-}
+// function validatePassword(password) {
+//   const passwordRegex =
+//     /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+//   return passwordRegex.test(password);
+// }
 
 //Function to validate password
 function validatePassword(password) {
@@ -26,7 +26,7 @@ function validatePassword(password) {
 // The route allows me to connect to my customer account
 router.post("/signin", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
-    res.json({ result: false, error: "Champs vide ou manquants" });
+    res.json({ result: false, error: "Champs vides ou manquants" });
     return;
   }
   const { email, password } = req.body;
@@ -38,7 +38,10 @@ router.post("/signin", (req, res) => {
     if (data && bcrypt.compareSync(password, data.password)) {
       res.json({ result: true, token: data.token, data: data });
     } else {
-      res.json({ result: false, error: "E-mail ou mot de passe éronné" });
+      res.json({
+        result: false,
+        error: "Compte non trouvé ou mot de passe invalide",
+      });
     }
   });
 });

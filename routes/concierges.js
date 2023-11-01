@@ -29,7 +29,7 @@ function validatePassword(password) {
 // The route allows me to connect to my concierge account
 router.post("/signinConcierge", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
-    res.json({ result: false, error: "Champs vide ou manquants" });
+    res.json({ result: false, error: "Champs vides ou manquants" });
     return;
   }
   const { email, password } = req.body;
