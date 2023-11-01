@@ -13,7 +13,7 @@ router.get("/", function (req, res, next) {
 
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3001",
+    origin: "https://quest-frontend-chi.vercel.app/",
     methods: ["GET", "POST"],
   },
 });
