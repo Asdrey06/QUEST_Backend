@@ -1,7 +1,5 @@
 const request = require("supertest");
 const app = require("./app");
-const bcrypt = require("bcrypt");
-const { init } = require("./models/chat");
 
 //*** SIGN IN ***
 
