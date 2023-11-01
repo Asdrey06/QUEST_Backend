@@ -26,7 +26,7 @@ function validatePassword(password) {
 // The route allows me to connect to my customer account
 router.post("/signin", (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
-    res.json({ result: false, error: "Champs vide ou manquants" });
+    res.json({ result: false, error: "Missing or empty fields" });
     return;
   }
   const { email, password } = req.body;
