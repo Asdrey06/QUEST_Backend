@@ -7,7 +7,6 @@ const server = http.createServer(app);
 const Chat = require("../models/chat");
 const Request = require("../models/request");
 
-/* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
@@ -26,12 +25,6 @@ io.on("connection", (socket) => {
     console.log(message);
 
     try {
-      // const chat = new Chat({
-      //   date: new Date(),
-      //   firstname: message.sender,
-      //   message: message.message,
-      // });
-
       const savedMessage = {
         date: new Date(),
         firstname: message.sender,
@@ -49,7 +42,6 @@ io.on("connection", (socket) => {
         console.log(data);
       });
 
-      // Broadcast the message to all connected clients
       io.emit("chat message", savedMessage);
       console.log("Received message:", message, message.requestId);
     } catch (err) {

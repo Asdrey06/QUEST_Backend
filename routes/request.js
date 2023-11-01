@@ -7,16 +7,6 @@ const { checkBody } = require("../modules/checkBody");
 const User = require("../models/user");
 const FinishedRequest = require("../models/finishedRequest");
 
-// Function to validate message
-// function validateInstruction(instruction) {
-//   const messageRegex = /\bmerde\b|con/i;
-//   return messageRegex.test(instruction);
-// }
-
-// const messageRegex = /merde|connard|drogue|sexe/gi;
-// messageRegex.lastIndex = 0;
-
-// POST : request with empty field
 router.post("/emptyRequest", (req, res) => {
   if (
     !checkBody(req.body, [
@@ -34,24 +24,6 @@ router.post("/emptyRequest", (req, res) => {
 
 //POST : Create request
 router.post("/saveRequest", (req, res) => {
-  // const instruction = req.body.instruction;
-  // console.log(instruction);
-  // console.log(messageRegex.test(instruction));
-  // if (messageRegex.test(instruction)) {
-  //   res.json({ result: false, error: "Vulgarité interdite!" });
-  //   return;
-  // }
-
-  // if (
-  //   req.body.instruction ||
-  //   req.body.serviceFees ||
-  //   req.body.productFees ||
-  //   req.body.date === ""
-  // ) {
-  //   res.json({ error: "Offre incomplète" });
-  //   return;
-  // }
-
   const newRequest = new Request({
     instruction: req.body.instruction,
     paymentInfo: req.body.paymentInfo,
@@ -95,7 +67,6 @@ router.post("/saveRequest", (req, res) => {
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });
-  console.log(instruction);
 });
 
 //POST : Finish request
