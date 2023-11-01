@@ -42,6 +42,16 @@ router.post("/saveRequest", (req, res) => {
     return;
   }
 
+  // if (
+  //   req.body.instruction ||
+  //   req.body.serviceFees ||
+  //   req.body.productFees ||
+  //   req.body.date === ""
+  // ) {
+  //   res.json({ error: "Offre incomplète" });
+  //   return;
+  // }
+
   const newRequest = new Request({
     instruction: req.body.instruction,
     paymentInfo: req.body.paymentInfo,
