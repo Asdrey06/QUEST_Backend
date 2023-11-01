@@ -25,6 +25,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+const Request = require("./models/request");
+
 // Import the Stripe library and set your secret key
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -64,6 +66,57 @@ app.post("/processpayment", async (req, res) => {
     console.log(error.message);
     return res.status(500).json({ error: error.message });
   }
+});
+
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_KEY,
+  secret: process.env.PUSHER_SECRET,
+  cluster: process.env.PUSHER_CLUSTER,
+  useTLS: true,
+});
+
+app.post("/sendmessage", (req, res) => {
+  const { message, sender, userType } = req.body;
+
+  console.log(req.body.message);
+
+  console.log("this", req.body.sender);
+
+  console.log("thes", req.body.userType);
+
+  console.log(req.body.id);
+
+  // Do something with the message, e.g., store it in a database
+
+  // Broadcast the message to connected clients using Pusher
+  pusher
+    .trigger("quest-livechat", "message", {
+      message: req.body.message,
+      sender: req.body.sender,
+      userType: req.body.userType,
+    })
+    .then((data) => {
+      const savedMessage = {
+        date: new Date(),
+        firstname: req.body.sender,
+        message: req.body.message,
+      };
+      Request.updateOne(
+        { _id: req.body.id },
+        {
+          $push: {
+            chat: savedMessage,
+          },
+        }
+      ).then((data) => {
+        console.log(data);
+      });
+    });
+
+  res.json({ success: true });
 });
 
 app.use("/", indexRouter);

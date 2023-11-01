@@ -7,7 +7,7 @@ const { checkBody } = require("../modules/checkBody");
 const User = require("../models/user");
 const FinishedRequest = require("../models/finishedRequest");
 
-router.post("/emptyRequest", (req, res) => {
+router.post("https://quest-backend-six.vercel.app/emptyRequest", (req, res) => {
   if (
     !checkBody(req.body, [
       "instruction",
