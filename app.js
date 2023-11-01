@@ -83,6 +83,8 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
+app.options("/sendmessage", cors());
+
 app.post("/sendmessage", (req, res) => {
   const { message, sender, userType } = req.body;
 
