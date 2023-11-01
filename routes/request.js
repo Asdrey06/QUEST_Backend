@@ -13,7 +13,7 @@ const FinishedRequest = require("../models/finishedRequest");
 //   return messageRegex.test(instruction);
 // }
 
-const messageRegex = /merde|connard|drogue|sexe/gi;
+// const messageRegex = /merde|connard|drogue|sexe/gi;
 // messageRegex.lastIndex = 0;
 
 // POST : request with empty field
@@ -34,13 +34,13 @@ router.post("/emptyRequest", (req, res) => {
 
 //POST : Create request
 router.post("/saveRequest", (req, res) => {
-  const instruction = req.body.instruction;
-  console.log(instruction);
-  console.log(messageRegex.test(instruction));
-  if (messageRegex.test(instruction)) {
-    res.json({ result: false, error: "Vulgarité interdite!" });
-    return;
-  }
+  // const instruction = req.body.instruction;
+  // console.log(instruction);
+  // console.log(messageRegex.test(instruction));
+  // if (messageRegex.test(instruction)) {
+  //   res.json({ result: false, error: "Vulgarité interdite!" });
+  //   return;
+  // }
 
   const newRequest = new Request({
     instruction: req.body.instruction,
