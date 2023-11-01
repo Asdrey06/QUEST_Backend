@@ -17,7 +17,12 @@ const cors = require("cors");
 
 var app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://quest-frontend-chi.vercel.app",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
 
 app.use(logger("dev"));
 app.use(express.json());
