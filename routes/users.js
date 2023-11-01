@@ -11,11 +11,11 @@ function validateEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return emailRegex.test(email);
 }
-function validatePassword(password) {
-  const passwordRegex =
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
-  return passwordRegex.test(password);
-}
+// function validatePassword(password) {
+//   const passwordRegex =
+//     /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+//   return passwordRegex.test(password);
+// }
 
 //Function to validate password
 function validatePassword(password) {
@@ -31,14 +31,14 @@ router.post("/signin", (req, res) => {
   }
   const { email, password } = req.body;
   if (!validateEmail(email)) {
-    res.json({ result: false, error: "Adresse e-mail invalide" });
+    res.json({ result: false, error: "Invalid email address" });
     return;
   }
   User.findOne({ email: email }).then((data) => {
     if (data && bcrypt.compareSync(password, data.password)) {
       res.json({ result: true, token: data.token, data: data });
     } else {
-      res.json({ result: false, error: "E-mail ou mot de passe éronné" });
+      res.json({ result: false, error: "User not found or wrong password" });
     }
   });
 });
@@ -52,7 +52,7 @@ router.post("/signUp", (req, res) => {
 
   const { email } = req.body;
   if (!validateEmail(email)) {
-    res.json({ result: false, error: "Adresse e-mail invalide" });
+    res.json({ result: false, error: "Invalid email address" });
     return;
   }
 
