@@ -7,20 +7,23 @@ const { checkBody } = require("../modules/checkBody");
 const User = require("../models/user");
 const FinishedRequest = require("../models/finishedRequest");
 
-router.post("https://quest-backend-six.vercel.app/emptyRequest", (req, res) => {
-  if (
-    !checkBody(req.body, [
-      "instruction",
-      "paymentInfo",
-      "date",
-      "serviceFees",
-      "productFees",
-      "totalFees",
-    ])
-  )
-    res.json({ result: false, error: "Champ non renseigné" });
-  return;
-});
+router.post(
+  "https://https://quest-backend-six.vercel.app/emptyRequest",
+  (req, res) => {
+    if (
+      !checkBody(req.body, [
+        "instruction",
+        "paymentInfo",
+        "date",
+        "serviceFees",
+        "productFees",
+        "totalFees",
+      ])
+    )
+      res.json({ result: false, error: "Champ non renseigné" });
+    return;
+  }
+);
 
 //POST : Create request
 router.post("/saveRequest", (req, res) => {
