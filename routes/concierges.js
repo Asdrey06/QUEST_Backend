@@ -139,12 +139,6 @@ router.post("/signupConcierge", (req, res) => {
               documents: req.body.documents,
             },
           ],
-          reviews: [
-            {
-              stars: req.body.stars,
-              review: req.body.review,
-            },
-          ],
           token: uid2(32),
           status: req.body.status,
         });
