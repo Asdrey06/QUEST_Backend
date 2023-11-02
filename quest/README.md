@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Open [https://https://quest-backend-six.vercel.app](https://https://quest-backend-six.vercel.app) with your browser to see the result.
+Open [https://quest-backend-six.vercel.app](https://quest-backend-six.vercel.app) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
