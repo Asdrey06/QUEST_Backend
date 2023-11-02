@@ -19,7 +19,7 @@ var app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3001",
+    origin: "https://quest-frontend-chi.vercel.app",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
